@@ -15,6 +15,8 @@ class Month
 
     @days = []
     (0...no_of_days).each { |i| @days.append Day.new(number: i + 1) }
+
+    @separator_length = 21
   end
 
   def number=(number, year: @year)
@@ -36,6 +38,26 @@ class Month
     str = ''
     @days.each { |day| str += day.to_s + '; ' }
     str
+  end
+
+  def pretty
+    str = ''
+    day_numbers = ''
+    @days.each_with_index do |day, i|
+      str += day.marked? ? ' + ' : ' - '
+      day_numbers += (i + 1) < 10 ? ' ' : ''
+      day_numbers += (i + 1).to_s + ' '
+      if ((i + 1) % 7).zero?
+        str = add_week_day_numbers(str, day_numbers)
+        day_numbers = ''
+      end
+    end
+    str += "\n#{day_numbers}"
+    str
+  end
+
+  def add_week_day_numbers(str, day_numbers)
+    "#{str}\n#{day_numbers}\n" + '=' * @separator_length + "\n"
   end
 end
 
