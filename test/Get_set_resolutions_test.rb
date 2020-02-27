@@ -2,7 +2,7 @@ require 'minitest/autorun'
 
 class GetSetResolutionsTest < MiniTest::Test
   def setup
-    @resolutions = Resolution_list.new
+    @resolutions = ResolutionList.new
   end
 
   def teardown
@@ -14,7 +14,7 @@ class GetSetResolutionsTest < MiniTest::Test
   end
 
   def test_get_resolutions_list
-    resolutions = Resolution_list.new('test resolution', '2nd resolution', 'Resolution - last')
+    resolutions = ResolutionList.new('test resolution', '2nd resolution', 'Resolution - last')
     assert ['test resolution', '2nd resolution', 'Resolution - last'], resolutions.resolutions
   end
 

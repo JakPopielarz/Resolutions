@@ -1,4 +1,6 @@
-class Resolution_list
+require_relative 'resolution'
+
+class ResolutionList
   attr_accessor :resolutions
 
   def initialize(*args)
