@@ -1,6 +1,7 @@
 require_relative 'day'
 
 class Month
+  attr_accessor :name
   attr_reader :number, :days
 
   def initialize(number: 1, year: 0)
@@ -17,6 +18,7 @@ class Month
     (0...no_of_days).each { |i| @days.append Day.new(number: i + 1) }
 
     @separator_length = 21
+    @separator_char = '='
 
     @name = get_month_name(@number)
   end
@@ -43,7 +45,7 @@ class Month
   end
 
   def pretty
-    str = "#{@name.upcase}\n#{'=' * @separator_length}\n"
+    str = "#{@name.upcase}\n#{@separator_char * @separator_length}\n"
     day_numbers = ''
     @days.each_with_index do |day, i|
       str += day.marked? ? ' + ' : ' - '
@@ -59,7 +61,7 @@ class Month
   end
 
   def add_week_day_numbers(str, day_numbers)
-    "#{str}\n#{day_numbers}\n#{'=' * @separator_length}\n"
+    "#{str}\n#{day_numbers}\n#{@separator_char * @separator_length}\n"
   end
 end
 
