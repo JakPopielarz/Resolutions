@@ -2,10 +2,10 @@ require 'chunky_png'
 
 class CalendarPage
   def initialize(month, color: ChunkyPNG::Color.rgb(223, 175, 237),
-                 resolution: [1366, 768], file_name: month.name+'.png')
+                 size: [1366, 768], file_name: month.name + '.png')
     @month = month
     @bg_color = color
-    @resolution = resolution
+    @size = size
     @file_name = file_name
 
     initialize_parts
@@ -34,18 +34,43 @@ class CalendarPage
   end
 
   def get_page
-    png = ChunkyPNG::Image.new(@resolution[0], @resolution[1], @bg_color)
+    png = ChunkyPNG::Image.new(@size[0], @size[1], @bg_color)
     png.compose!(@name_img,
-                 @resolution[0]/2 - @name_img.width/2,
-                 @resolution[1]/2 - @name_img.height)
+                 @size[0]/2 - @name_img.width/2,
+                 @size[1]/2 - @name_img.height)
     png.compose!(@days_img,
-                 @resolution[0]/2 - @days_img.width/2,
-                 @resolution[1]/2)
+                 @size[0]/2 - @days_img.width/2,
+                 @size[1]/2)
     png
   end
 
   def save_page
     png = get_page
     png.save(@file_name, interlace: true)
+  end
+
+  def mark_resolution(resolution)
+    # make sure that correct days will be marked
+    @month = resolution.get_month(@month)
+    # mark them
+    @month.days.each { |day| mark_day(day, resolution) if day.marked? }
+  end
+
+  def mark_day(day, resolution)
+    horizontal_offset = 151
+
+    week = day.number / 7
+
+    if (day.number % 7).zero?
+      week -= 1
+      day_of_week = 6
+    else
+      day_of_week = day.number % 7 - 1
+    end
+
+    y = resolution.symbol.height * week
+    x = resolution.symbol.width * day_of_week
+
+    @days_img.compose!(resolution.symbol, x + horizontal_offset, y)
   end
 end

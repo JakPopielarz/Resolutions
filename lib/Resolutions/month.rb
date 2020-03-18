@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 require_relative 'day'
 
 class Month
   attr_accessor :name
-  attr_reader :number, :days
+  attr_reader :number, :days, :year
 
   def initialize(number: 1, year: 0)
     unless number < 13 && number.positive?
@@ -62,6 +63,10 @@ class Month
 
   def add_week_day_numbers(str, day_numbers)
     "#{str}\n#{day_numbers}\n#{@separator_char * @separator_length}\n"
+  end
+
+  def ==(other)
+    @number == other.number && @year == other.year
   end
 end
 

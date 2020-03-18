@@ -7,7 +7,8 @@ module Resolutions
   class Error < StandardError; end
 end
 
-[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].each do |i|
-  png = CalendarPage.new(Month.new(number: i, year: 2020))
-  png.save_page
-end
+resolution = Resolution.new('test')
+resolution.months[0].days.each { |day| day.mark }
+png = CalendarPage.new resolution.months[0]
+png.mark_resolution resolution
+png.save_page
